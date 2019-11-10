@@ -2,6 +2,7 @@
 
 namespace Muzzle\Messages;
 
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Muzzle\CliFormatter;
@@ -9,6 +10,8 @@ use PHPUnit\Framework\Assert as PHPUnit;
 
 trait ContentAssertions
 {
+
+    use ArraySubsetAsserts;
 
     /**
      * Gets the body of the message.
@@ -33,7 +36,7 @@ trait ContentAssertions
     public function assertSee($value) : self
     {
 
-        PHPUnit::assertContains($value, (string) $this->getBody());
+        PHPUnit::assertStringContainsString($value, (string) $this->getBody());
 
         return $this;
     }
@@ -47,7 +50,7 @@ trait ContentAssertions
     public function assertSeeText($value) : self
     {
 
-        PHPUnit::assertContains($value, strip_tags((string) $this->getBody()));
+        PHPUnit::assertStringContainsString($value, strip_tags((string) $this->getBody()));
 
         return $this;
     }
@@ -61,7 +64,7 @@ trait ContentAssertions
     public function assertDoNotSee($value) : self
     {
 
-        PHPUnit::assertNotContains($value, (string) $this->getBody());
+        PHPUnit::assertStringNotContainsString($value, (string) $this->getBody());
 
         return $this;
     }
@@ -75,7 +78,7 @@ trait ContentAssertions
     public function assertDoNotSeeText($value) : self
     {
 
-        PHPUnit::assertNotContains($value, strip_tags((string) $this->getBody()));
+        PHPUnit::assertStringNotContainsString($value, strip_tags((string) $this->getBody()));
 
         return $this;
     }
@@ -89,7 +92,7 @@ trait ContentAssertions
     public function assertJson(array $data) : self
     {
 
-        PHPUnit::assertArraySubset(
+        static::assertArraySubset(
             $data,
             $this->decode(),
             false,
@@ -206,7 +209,7 @@ trait ContentAssertions
 
         foreach ($structure as $key => $value) {
             if (is_array($value) && $key === '*') {
-                PHPUnit::assertInternalType('array', $responseData);
+                PHPUnit::assertIsArray($responseData);
 
                 foreach ($responseData as $responseDataItem) {
                     $this->assertJsonStructure($structure['*'], $responseDataItem);

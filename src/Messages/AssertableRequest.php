@@ -44,7 +44,7 @@ class AssertableRequest implements RequestInterface
                 implode(', ', $expected)
             );
 
-            PHPUnit::assertArraySubset($expected, $actual, $message);
+            static::assertArraySubset($expected, $actual, $message);
         }
 
         return $this;
@@ -270,7 +270,7 @@ class AssertableRequest implements RequestInterface
     {
 
         $query = Psr7\parse_query($this->getUri()->getQuery());
-        PHPUnit::assertArraySubset($values, $query, false, (function ($expected, $actual) {
+        static::assertArraySubset($values, $query, false, (function ($expected, $actual) {
 
             return 'Could not find ' . PHP_EOL
                    . CliFormatter::format($expected) . PHP_EOL

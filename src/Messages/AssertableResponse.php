@@ -2,6 +2,7 @@
 
 namespace Muzzle\Messages;
 
+use Illuminate\Support\Str;
 use PHPUnit\Framework\Assert as PHPUnit;
 
 class AssertableResponse extends DecodableResponse
@@ -60,7 +61,7 @@ class AssertableResponse extends DecodableResponse
         );
 
         if (! is_null($uri)) {
-            PHPUnit::assertContains(app('url')->to($uri), $this->getHeader('Location'), '', true);
+            PHPUnit::assertContains(Str::lower(app('url')->to($uri)), array_map([Str::class, 'lower'], $this->getHeader('Location')));
         }
 
         return $this;
