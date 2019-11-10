@@ -3,6 +3,7 @@
 namespace Muzzle\Messages;
 
 use BadMethodCallException;
+use Illuminate\Support\Str;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -171,7 +172,7 @@ trait ResponseDecorator
 
         if (method_exists($this->response, $method)) {
             $response = $this->response->{$method}(...$arguments);
-            if (starts_with($method, 'with')) {
+            if (Str::startsWith($method, 'with')) {
                 return static::fromBaseResponse($response);
             }
             return $response;

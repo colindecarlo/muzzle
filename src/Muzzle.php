@@ -5,6 +5,7 @@ namespace Muzzle;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\HandlerStack;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Muzzle\Messages\AssertableRequest;
 use Muzzle\Middleware\Assertable;
@@ -66,7 +67,7 @@ class Muzzle implements ClientInterface
 
         $this->client = new GuzzleClient(array_merge(
             $this->client->getConfig(),
-            array_except($config, ['handler'])
+            Arr::except($config, ['handler'])
         ));
 
         return $this;
